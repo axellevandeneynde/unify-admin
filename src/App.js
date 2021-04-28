@@ -1,6 +1,12 @@
+import NavBar from './components/navbar'
+import AddSourceForm from './Forms/add-source-form';
+
 function App() {
   return (
-    <h1>Unify Admin</h1>
+    <div>
+      <NavBar></NavBar>
+      <AddSourceForm></AddSourceForm>
+    </div>
   );
 }
 

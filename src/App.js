@@ -1,5 +1,5 @@
 import NavBar from './components/navbar'
-import AddSourceForm from './Forms/add-source-form';
+import AddSourceForm from './forms/add-source-form';
 
 function App() {
   return (

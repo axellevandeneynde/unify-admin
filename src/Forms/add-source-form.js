@@ -1,6 +1,24 @@
 import { Formik, Field, Form, } from 'formik';
+import { useState } from 'react';
+import Spinner from '../components/spinner';
+import ChecklistItem from '../components/checklistItem';
 
 function AddSourceForm() {
+
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [submittedSource, setSubmittedSource] = useState({});
+    const [apiResponse, setApiResponse] = useState({});
+
+    const categories = ['politics', 'culture', 'sport', 'international', 'economy', 'technology', 'science', 'health', 'travel', 'columns', 'Business', 'life & style', 'general', 'long reads']
+    const regions = ['belgium', 'flanders', 'brussels', 'wallonia']
+
+    const categoriesChecklistItems = categories.map((item, i) =>
+        <ChecklistItem label={item} list="categories" key={`c${i}`} ></ChecklistItem>
+    )
+    const regionsChecklistItems = regions.map((item, i) =>
+        <ChecklistItem label={item} list="regions" key={`r${i}`} ></ChecklistItem>
+    )
+
     return (
         <section className="container is-max-desktop section is-small">
             <h1 className="title">Add new publication</h1>
@@ -16,8 +34,21 @@ function AddSourceForm() {
                     regions: []
                 }}
                 onSubmit={async (values) => {
-                    await new Promise((r) => setTimeout(r, 500));
-                    alert(JSON.stringify(values, null, 2));
+                    setSubmitLoading(true);
+                    //local
+                    //fetch('https://localhost:3001/new-rss-feed', {
+                    fetch('https://unify-back-express.herokuapp.com/new-rss-feed', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(values),
+                    }).then(result => result.json())
+                        .then(data => {
+                            setApiResponse(data);
+                            setSubmitLoading(false);
+                            setSubmittedSource(values);
+                        });
                 }}
             >
                 <Form>
@@ -83,41 +114,21 @@ function AddSourceForm() {
 
                     <div className="field">
                         <label className="label">Publication categories</label>
-                        <div className="control">
-                            <label className="checkbox">
-                                <Field type="checkbox" name="categories" value="politiek"></Field>
-                           Politiek
-                    </label>
-                        </div>
-                        <div className="control">
-                            <label className="checkbox">
-                                <Field type="checkbox" name="categories" value="sport"></Field>
-                           Sport
-                    </label>
-                        </div>
+                        {categoriesChecklistItems}
                     </div>
 
                     <div className="field">
                         <label className="label">Publication regions</label>
-                        <div className="control">
-                            <label className="checkbox">
-                                <Field type="checkbox" name="regions"></Field>
-                           Politiek
-                    </label>
-                        </div>
-                        <div className="control">
-                            <label className="checkbox">
-                                <Field type="checkbox" name="regions"></Field>
-                           Sport
-                    </label>
-                        </div>
+                        {regionsChecklistItems}
                     </div>
 
                     <div className="control">
-                        <button type="submit" className="button is-warning">Submit</button>
+                        <button type="submit" className="button is-warning">Submit <Spinner loading={submitLoading}></Spinner></button>
                     </div>
                 </Form>
             </Formik>
+            <p>{JSON.stringify(apiResponse)}</p>
+            <p>{JSON.stringify(submittedSource)}</p>
         </section>
     );
 }

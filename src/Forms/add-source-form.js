@@ -10,7 +10,7 @@ function AddSourceForm() {
     const [apiResponse, setApiResponse] = useState({});
 
     const categories = ['politics', 'culture', 'sport', 'international', 'economy', 'technology', 'science', 'health', 'travel', 'columns', 'Business', 'life & style', 'general', 'long reads']
-    const regions = ['belgium', 'flanders', 'brussels', 'wallonia']
+    const regions = ['belgium', 'flanders', 'brussels', 'wallonia', 'Antwerpen', 'Kempen', 'Mechelen-Waas', 'Limburg', 'Europa']
 
     const categoriesChecklistItems = categories.map((item, i) =>
         <ChecklistItem label={item} list="categories" key={`c${i}`} ></ChecklistItem>
@@ -31,13 +31,14 @@ function AddSourceForm() {
                     website: '',
                     language: '',
                     categories: [],
-                    regions: []
+                    regions: [],
+                    biased: 'false'
                 }}
                 onSubmit={async (values) => {
                     setSubmitLoading(true);
                     //local
-                    //fetch('https://localhost:3001/new-rss-feed', {
-                    fetch('https://unify-back-express.herokuapp.com/new-rss-feed', {
+                    fetch('http://localhost:3001/new-rss-feed', {
+                        // fetch('https://unify-back-express.herokuapp.com/new-rss-feed', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -120,6 +121,13 @@ function AddSourceForm() {
                     <div className="field">
                         <label className="label">Publication regions</label>
                         {regionsChecklistItems}
+                    </div>
+
+                    <div className="field">
+                        <div className="control">
+                            <label className="label">Biased</label>
+                            <Field type="text" label="biased" name="biased" id="biased" ></Field>
+                        </div>
                     </div>
 
                     <div className="control">

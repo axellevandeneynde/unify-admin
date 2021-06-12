@@ -10,7 +10,7 @@ function AddSourceForm() {
     const [apiResponse, setApiResponse] = useState({});
 
     const categories = ['politics', 'culture', 'sport', 'international', 'economy', 'technology', 'science', 'health', 'travel', 'columns', 'Business', 'life & style', 'general', 'long reads']
-    const regions = ['belgium', 'flanders', 'brussels', 'wallonia', 'Antwerpen', 'Kempen', 'Mechelen-Waas', 'Limburg', 'Europa']
+    const regions = ['belgium', 'flanders', 'brussels', 'wallonia', 'Antwerpen', 'Kempen', 'Mechelen-Waas', 'Limburg', 'Europa', 'Nederland']
 
     const categoriesChecklistItems = categories.map((item, i) =>
         <ChecklistItem label={item} list="categories" key={`c${i}`} ></ChecklistItem>
@@ -38,7 +38,6 @@ function AddSourceForm() {
                     setSubmitLoading(true);
                     //local
                     fetch('http://localhost:3001/new-rss-feed', {
-                        // fetch('https://unify-back-express.herokuapp.com/new-rss-feed', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

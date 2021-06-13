@@ -21,9 +21,9 @@ function NavBar() {
                         Add new publication
       </a>
 
-                    <a className="navbar-item">
+                    {/* <a className="navbar-item">
                         Update publication
-      </a>
+      </a> */}
                 </div>
             </div>
         </nav>
